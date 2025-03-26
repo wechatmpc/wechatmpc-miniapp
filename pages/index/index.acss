@@ -1,0 +1,73 @@
+/**index.acss**/
+page {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+.scrollarea {
+  flex: 1;
+  overflow-y: hidden;
+  margin-top: 300rpx;
+  position: relative;
+}
+.loginbtn{
+  background-color: #00676C;
+  height: 100rpx;
+  border-radius: 100rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0rpx 60rpx;
+  margin-top: 60rpx;
+}
+.disable{
+  background-color: #777777;
+}
+
+.inputbtn{
+  background-color: #ceeef0;
+  height: 100rpx;
+  border-radius: 100rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0rpx 60rpx;
+  margin-top: 60rpx;
+}
+
+.logobox{
+  /* background-color: #ceeef0; */
+  height: 400rpx;
+  border-radius: 100rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0rpx 0rpx;
+  margin-top: 0rpx;
+}
+
+.btn_text{
+  color: white;
+  font-weight: 600;
+}
+
+.tips{
+  text-align: center;
+  margin-top: 30rpx;
+  font-size: small;
+}
+
+.foot{
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  bottom: 0;
+  width: 100vw;
+  margin-bottom: 70rpx;
+}
+.text-foot{
+  font-size: small;
+  color: black;
+}
+

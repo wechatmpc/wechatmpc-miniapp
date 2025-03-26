@@ -1,0 +1,31 @@
+<!--index.axml-->
+<scroll-view class="scrollarea" scroll-y type="list">
+  <view class="sc_welcome">
+    <welcome/>
+    <view class="inputbtn" >
+      <view>
+        <input  style="background-color:transparent" id="pincode"  password type="text" placeholder="Input your PIN code ..." bindinput="bindKeyInput" />
+      </view>
+    </view>
+
+    <view class="loginbtn" onTap="pinLogin">
+      <text class="btn_text">{{"PIN码 登 录"}}</text>
+    </view>
+
+    <view class="loginbtn"  bindtap="bioLogin">
+      <text class="btn_text">{{"生 物 登 录"}}</text>
+    </view>
+
+    <!-- <view class="tips">{{tips}}</view> -->
+  </view>
+
+  <view class="foot">
+    <view class="text-foot">Copyright © 2025 WechatMpc All Rights Reserved.</view>
+  </view>
+  <!-- <image class="sw_img" mode="aspectFit" src="../../compoment/homeWiper/assets/fast.svg"></image> -->
+
+  <block a:if="{{isLogin}}">
+    <web-view src="{{webviewUrl}}"></web-view>
+  </block>
+
+</scroll-view>

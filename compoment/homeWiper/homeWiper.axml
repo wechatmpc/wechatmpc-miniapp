@@ -1,0 +1,9 @@
+<swiper class="swiper" indicator-dots="true">
+  <view a:for="{{packList}}" a:for-item="item">
+    <swiper-item class="swiper_item">
+      <view class="sw_title">{{item.title}}</view>
+      <view class="sw_desc">{{item.desc}}</view>
+      <image class="sw_img" mode="aspectFit" src="{{item.img}}"></image>
+    </swiper-item>
+  </view>
+</swiper>
