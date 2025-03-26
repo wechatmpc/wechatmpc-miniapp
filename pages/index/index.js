@@ -35,10 +35,7 @@ Page({
     }
 
     this.login();
-    this.checkSoterSupport();
-    my.navigateTo({
-      url: "bio"
-    });
+    // this.checkSoterSupport();
     // Model keypair test
     console.log(hd.resotreSeed(239102331231, "wdnmd123"));
   },
@@ -111,67 +108,97 @@ Page({
 
   checkSoterSupport() {
     const that = this;
-    // 支付宝小程序暂无原生 Soter 生物认证接口，此处模拟检测生物认证支持情况
     my.showToast({
-      content: '检测设备生物认证功能...',
-      duration: 2000
+      content: '检测设备指纹认证功能...',
+      duration: 1000
     });
-    // 模拟检测：假设设备支持指纹认证
-    setTimeout(() => {
-      that.setData({
-        isSupported: true,
-        supportMode: ['fingerPrint']
-      });
-    }, 1000);
+    my.checkIsSupportIfaaAuthentication ({
+      checkAuthMode: 'fingerPrint', // 'facial'
+      success: (res) => {
+        if (res.isEnrolled) {
+
+          setTimeout(() => {
+            that.setData({
+              isSupported: true,
+              supportMode: ['fingerPrint']
+            });
+          }, 1000);
+        } else {
+          my.alert({
+            title: '提示',
+            content: '您尚未录入生物识别信息，请先到系统设置中录入',
+          });
+        }
+      },
+      fail: (err) => {
+        console.error('检测生物识别失败：', err);
+      }
+    });
+    my.showToast({
+      content: '检测设备人脸认证功能...',
+      duration: 1000
+    });
+    my.checkIsSupportIfaaAuthentication ({
+      checkAuthMode: 'facial',
+      success: (res) => {
+        if (res.isEnrolled) {
+
+          setTimeout(() => {
+            that.setData({
+              isSupported: true,
+              supportMode: ['fingerPrint']
+            });
+          }, 1000);
+        } else {
+          my.alert({
+            title: '提示',
+            content: '您尚未录入生物识别信息，请先到系统设置中录入',
+          });
+        }
+      },
+      fail: (err) => {
+        console.error('检测生物识别失败：', err);
+      }
+    });
+
   },
 
   startSoterAuth() {
     const that = this;
-    if (!this.data.isSupported) {
-      my.showToast({
-        content: '您的设备不支持生物认证',
-        type: 'none'
-      });
-      return;
-    }
-    const authMode = this.data.supportMode.includes('fingerPrint')
-      ? 'fingerPrint'
-      : this.data.supportMode.includes('facial')
-      ? 'facial'
-      : '';
-    if (!authMode) {
-      my.showToast({
-        content: '无可用的生物认证方式',
-        type: 'none'
-      });
-      return;
-    }
-    const challenge = 'challenge_code_from_server';
-    // 模拟生物认证流程，实际业务中可替换为真实接口或自定义逻辑
-    my.confirm({
-      title: '生物认证',
-      content: '请进行生物认证以验证身份',
-      confirmButtonText: '认证',
-      cancelButtonText: '取消',
-      success: (result) => {
-        if (result.confirm) {
-          console.log('生物认证成功');
-          // 模拟认证返回结果，包含 uid 属性
-          const ret = { uid: 'simulated_uid' };
-          const seed = hd.resotreSeed(that.data.uid, ret.uid);
-          console.log(seed);
-          that.setData({
-            isLogin: true,
-            webviewUrl: `https://cryptoloot.sidcloud.cn/${that.data.sidePart}&tk=${seed}&randomSeed=${Date.now()}`
-          });
-        } else {
-          console.error('生物认证取消或失败');
-          my.showToast({
-            content: '认证失败',
-            type: 'none'
+    if (my.canIUse('checkIsSupportIfaaAuthentication')) {
+      my.checkIsSupportIfaaAuthentication({
+        success(res) {
+          console.log("support mode",res.supportMode);
+
+          if(res.supportMode.length>0)
+          {
+            my.startIfaaAuthentication({
+              requestAuthModes: [res.supportMode[0]],
+              challenge : that.data.uid,
+              success: function(re) {
+                console.log("auth result",re);
+                const seed = hd.resotreSeed(that.data.uid, res.supportMode[0]);
+                console.log("auth seed",res);
+                console.log(seed);
+                that.setData({
+                  isLogin: true,
+                  webviewUrl: `https://cryptoloot.sidcloud.cn/${that.data.sidePart}&tk=${seed}&randomSeed=${Date.now()}`
+                });
+              },
+              fail: function(err) {
+                console.log("auth error",err);
+              }
+            });
+          }
+        },
+        fail(res) {
+          console.error("checkissupport failed",res);
+          my.alert({
+            title: '提示',
+            content: '您尚未录入生物识别信息，请先到系统设置中录入',
           });
         }
-      }
-    });
+      }) 
+    }
   }
 });

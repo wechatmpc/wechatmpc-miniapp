@@ -12,7 +12,7 @@
       <text class="btn_text">{{"PIN码 登 录"}}</text>
     </view>
 
-    <view class="loginbtn"  bindtap="bioLogin">
+    <view class="loginbtn"  onTap="bioLogin">
       <text class="btn_text">{{"生 物 登 录"}}</text>
     </view>
 
