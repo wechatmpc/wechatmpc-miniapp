@@ -14,22 +14,30 @@ Page({
     isSupported: false  // 是否支持生物认证
   },
 
-  onLoad(option) {
-    console.log(option);
+
+  
+  onLoad() {
+    console.log("🍺 page init")
+    let option = my.getLaunchOptionsSync();
+    console.log("🔥option", option);
     if (option) {
-      if (option.scene) {
-        this.setData({
-          sidePart: `action?action=${option.scene}`,
-          scene: option.scene || ""
-        });
-      }
-      for (const key in option) {
-        console.log("option keys ::", key);
-        if (key !== "scene" && key.length > 10) {
-          console.log("🔥New Action ::", key);
-          this.setData({
-            sidePart: `action?action=${key}`
-          });
+      // if (option.scene) {
+      //   this.setData({
+      //     sidePart: `action?action=${option.scene}`,
+      //     scene: option.scene || ""
+      //   });
+      // }
+      if(option.query)
+      {
+        console.log("🔥option query", option.query)
+        for (const key in option.query) {
+          console.log("🔥option keys ::", key);
+          if (key !== "scene" && key.length > 10) {
+            console.log("🔥New Action ::", key);
+            this.setData({
+              sidePart: `action?action=${key}`
+            });
+          }
         }
       }
     }
